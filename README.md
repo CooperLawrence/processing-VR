@@ -23,8 +23,6 @@ Move Images Up: Up Arrow <br>
 Move Images Down: Down Arrow <br>
 
 __Future Updates__ <br>
-Processing 3! The only reason why a new version built in Processing 3 hasn't been released yet is the amount of broken functions and native Java code that doesn't work properly. As of now, the only thing that's holding it up is that trying to get the sketch window's location constantly returns (0, 0).
+Update to Processing 3! The only reason why a new version built in Processing 3 hasn't been released yet is the amount of broken functions and native Java code that doesn't work properly.
 
 At some point, the whole program will be rewritten and released as a contributed library for Processing. One of the main focuses before this happens is updating the code to allow the user to use any form of input (video capture, processing sketch, etc).
-
-Stereoscopic vision through hardware image splitting! Rather than splitting the headset's video input via software (which is slow and limits your max resolution), it can be done through the hardware, sending the video to two separate displays mounted in the headset.
