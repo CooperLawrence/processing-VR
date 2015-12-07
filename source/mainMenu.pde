@@ -1,5 +1,5 @@
 void mainMenu() {
-  //Add a green background
+  //Add a nice green background
   background(30, 170, 25);
 
   //Start button
@@ -9,19 +9,14 @@ void mainMenu() {
     //Start the video if the user clicks the button
     if (mousePressed == true) {
       if (displaySelected == true) {
-        //Initialize the specific video object
-        if (mode == 0) {
-          screenCapture = new ScreenCapture();
-        } else if (mode == 1) {
-          videoCapture = new VideoCapture();
-        } else if (mode == 2) {
-          sketch = new Sketch();
-        }
+        //Initialize the screen capture object
+        screenCapture = new ScreenCapture();
       }
     }
   } else {
     fill(120); //Lighter
   }
+
   //Display the button and text
   rect(width/40, height/20, width/4, height/4, 25);
   fill(0);
@@ -36,11 +31,10 @@ void mainMenu() {
 
   //Available displays
   int textYPos = 60;
-  int rectYPos = 10;
 
   textSize((width*height)/4000);
   textAlign(LEFT);
-  for (int d = 0; d < displays.length + 1; d++) {
+  for (int d = 0; d < displays.length; d++) {
     if ((mouseX > (width/3) - 5) && (mouseX < ((width/3) - 5) + width - (width/3) - 10 && (mouseY > textYPos - 25) && (mouseY < (textYPos - 25) + 30))) {
       fill(80); //Darker
 
@@ -54,18 +48,7 @@ void mainMenu() {
           outputWidth = displays[d].getDisplayMode().getWidth();
           outputHeight = displays[d].getDisplayMode().getHeight();
 
-          selectedDisplay = d;
-          displaySelected = true;
-        } else if (d == displays.length) {
-          //Set the window location
-          windowLocationX = displays[customDisplay].getDefaultConfiguration().getBounds().x;
-          windowLocationY = 0;
-
-          //Set the window size
-          outputWidth = customOutputWidth;
-          outputHeight = customOutputHeight;
-
-          selectedDisplay = d;
+          selectedDisplay = d + 1;
           displaySelected = true;
         }
       }
@@ -76,7 +59,7 @@ void mainMenu() {
         fill(120); //Lighter
       }
 
-      if (selectedDisplay != d) {
+      if (selectedDisplay != d + 1) {
         fill(120); //Lighter
       }
     }
@@ -85,13 +68,8 @@ void mainMenu() {
     rect((width/3) - 5, textYPos - 25, width - (width/3) - 10, 30, 25);
 
     fill(0);
-    if (d < displays.length) {
-      text("Display " + (d + 1) + ": " + displays[d].getDisplayMode().getWidth() + "x" + displays[d].getDisplayMode().getHeight(), width/3, textYPos - 3); //Show the text on screen
-    } else {
-      text("Custom: " + customOutputWidth + "x" + customOutputHeight, width/3, textYPos - 3); //Show the text on screen
-    }
+    text("Display " + (d + 1) + ": " + displays[d].getDisplayMode().getWidth() + "x" + displays[d].getDisplayMode().getHeight(), width/3, textYPos - 3); //Show the text on screen
 
     textYPos += 30;
   }
 }
-

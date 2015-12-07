@@ -1,15 +1,14 @@
 
 class ScreenCapture {
   //Variables
-  int sketchWidth, sketchHeight; //<- turn into vector
-
-  boolean available = false;
+  boolean available = false; //True if a new frame is available to display
   //screenshotRobot.createScreenCapture(new Rectangle(appletTwo.getLocation().x + windowBorder.left, appletTwo.getLocation().y, captureWidth - windowBorder.left - windowBorder.right, captureHeight - windowBorder.bottom));
 
-  PVector rectangle = new PVector(0, 0);
-  PVector rectangleSize = new PVector(0, 0);
+  PVector rectanglePosition = new PVector();
+  PVector rectangleSize = new PVector();
 
-  Rectangle rect;
+  SecondApplet sa;
+  Rectangle captureRect;
 
   //Constructor
   ScreenCapture() {
@@ -18,37 +17,19 @@ class ScreenCapture {
     verticalDisplacement = outputHeight/20;
 
     //Change the window's size
-    frame.setResizable(true);
-    frame.setSize(outputWidth, outputHeight);
+    surface.setResizable(true);
+    surface.setSize(captureWidth, captureHeight);
 
-    //Remove the borders from the window
-    frame.removeNotify();
-    frame.setUndecorated(true);
-    frame.addNotify();
+    //Name of the second applet
+    String[] args = {"Video"};
 
-    //Sets the location of the display window
-    frame.setLocation(windowLocationX, windowLocationY);
+    //Create and start the new applet
+    sa = new SecondApplet();
+    PApplet.runSketch(args, sa);
 
-    //Keep the display window always on top
-    frame.setAlwaysOnTop (true);
-
-    //Create a new window
-    //captureArea = new JFrame("Capture Area");
-
-    //Set the capture window's size
-    //captureArea.setSize(captureWidth, captureHeight);
-
-    //Keep the capture window always on top
-    //captureArea.setAlwaysOnTop (true);
-
-    //Make the window able to stop the program when closed
-    //captureArea.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    //Make the capture window visible
-    //captureArea.setVisible(true);
-
-    //Create the second PFrame
-    PFrame f = new PFrame();
+    //Update the capture size based on the capture window
+    captureWidth = width;
+    captureHeight = height;
 
     //Start displaying the capture
     showVideo = true;
@@ -57,34 +38,38 @@ class ScreenCapture {
     thread("threadTask");
   }
 
-  //Functions
-  //  void run() {
-  //    takeScreenshot();
-  //    displayCapture();
-  //    moveMouse();
-  //  }
-
   void takeScreenshot() {
+    //Stupid code required to retrieve frame information in Processing 3
+    Frame[] frames = Frame.getFrames(); //Load all the running frames
+    Frame frame = frames[1]; //Tell Processing which frame is the ACTUAL main frame
+    //println(frame.getLocation());
+
     //Update the capture size based on the capture window
-    captureWidth = appletTwo.getWidth();
-    captureHeight = appletTwo.getHeight();
+    Insets windowBorder = frame.getInsets();
+
+    //Update the capture size based on the capture window
+    captureWidth = width;
+    captureHeight = height + windowBorder.top;
 
     //Recreate the capture rectangle's location and size if either have changed
-    if (appletTwo.getLocationOnScreen().y > 0) { //Only perform the following check if the capture window hasn't been minimized (Y position will be negative)
-      if (rectangle.x != appletTwo.getLocationOnScreen().x || rectangle.y != appletTwo.getLocationOnScreen().y || rectangleSize.x != captureWidth || rectangleSize.y != captureHeight) {
-        //Get the border size of the capture window
-        windowBorder = appletTwo.getInsets();
+    if (frame.getLocation().y >= 0) { //Only perform the following check if the capture window hasn't been minimized (Y position will be < 0)
+      if (rectanglePosition.x != frame.getLocation().x || rectanglePosition.y != frame.getLocation().y || rectangleSize.x != captureWidth || rectangleSize.y != captureHeight) {
+        captureRect = new Rectangle(frame.getLocation().x + windowBorder.left, frame.getLocation().y, captureWidth, captureHeight);
 
-        rect = new Rectangle(appletTwo.getLocationOnScreen().x + windowBorder.left, appletTwo.getLocationOnScreen().y, captureWidth - windowBorder.left - windowBorder.right, captureHeight - windowBorder.bottom);
-
-        rectangle.set(appletTwo.getLocation().x, appletTwo.getLocation().y);
+        rectanglePosition.set(frame.getLocation().x, frame.getLocation().y);
         rectangleSize.set(captureWidth, captureHeight);
+
+        surface.setTitle(captureWidth + "x" + captureHeight + "=" + (captureWidth*captureHeight));
       }
     }
 
-    //Take a new screenshot
-    //screenshot = new PImage(screenshotRobot.createScreenCapture (new Rectangle(appletTwo.getLocation().x + windowBorder.left, appletTwo.getLocation().y, captureWidth - windowBorder.left - windowBorder.right, captureHeight - windowBorder.bottom)));
-    screenshot = new PImage(screenshotRobot.createScreenCapture(rect));
+    try {
+      screenshot = new PImage(screenshotRobot.createScreenCapture(captureRect));
+    }
+    catch (Exception e) {
+      println("createScreenCapture exception");
+      e.printStackTrace();
+    }
 
     //Resize the screenshot
     screenshot.resize(outputWidth/2 - (horizontalDisplacement*2) + horizontalZoom, outputHeight - (verticalDisplacement*2) + verticalZoom);
@@ -102,10 +87,10 @@ class ScreenCapture {
     noStroke();
 
     //Left image
-    image(screenshot, 0 + horizontalDisplacement + horizontalShift - (horizontalZoom/2), 0 + verticalDisplacement + verticalShift - (verticalZoom/2));
+    sa.image(screenshot, 0 + horizontalDisplacement + horizontalShift - (horizontalZoom/2), 0 + verticalDisplacement + verticalShift - (verticalZoom/2));
 
     //Right image
-    image(screenshot, outputWidth/2 + horizontalDisplacement - horizontalShift - (horizontalZoom/2), 0 + verticalDisplacement + verticalShift - (verticalZoom/2));
+    sa.image(screenshot, outputWidth/2 + horizontalDisplacement - horizontalShift - (horizontalZoom/2), 0 + verticalDisplacement + verticalShift - (verticalZoom/2));
 
     //Let the user know there aren't any new frames ready to view
     available = false;
@@ -122,4 +107,3 @@ class ScreenCapture {
     }
   }
 }
-
