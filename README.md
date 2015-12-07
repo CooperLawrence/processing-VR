@@ -8,21 +8,25 @@ If you would like to view the source files, they are included in the download. T
 __Arduino__ <br>
 Currently, the Arduino sketch that is used to send the accelerometer and gyroscope data to Processing isn't included in the download. You can write your own code, and send the serial data at a baud rate of 9600, in the format of "X,Y,Z" without the quotations. The sketch will eventually be included in the download, but for now, that's not my main priority. You can download Arduino from their [website](https://www.arduino.cc/en/Main/Software), or on [GitHub](https://github.com/arduino/Arduino).
 
-__Controls__ <br>
-Save Profile: S and # <br>
-Load Profile: L and # <br>
-
-Increase Image Width: W <br>
-Decrease Image Width: Q <br>
-Increase Image Height: A <br>
-Decrease Image Height: Z <br>
-
-Move Images Closer: Right Arrow <br>
-Move Images Apart: Left Arrow <br>
-Move Images Up: Up Arrow <br>
-Move Images Down: Down Arrow <br>
 
 __Future Updates__ <br>
 Update to Processing 3! The only reason why a new version built in Processing 3 hasn't been released yet is the amount of broken functions and native Java code that doesn't work properly.
 
 At some point, the whole program will be rewritten and released as a contributed library for Processing. One of the main focuses before this happens is updating the code to allow the user to use any form of input (video capture, processing sketch, etc).
+
+
+__Controls__ <br>
+Save Profile: S and # <br>
+Load Profile: L and # <br>
+
+Toggle Head Tracking: V <br>
+
+Increase Image Width: E <br>
+Decrease Image Width: W <br>
+Increase Image Height: Q <br>
+Decrease Image Height: A <br>
+
+Move Images Closer: Left Arrow <br>
+Move Images Apart: Right Arrow <br>
+Move Images Up: Up Arrow <br>
+Move Images Down: Down Arrow <br>
