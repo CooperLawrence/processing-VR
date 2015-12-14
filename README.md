@@ -10,7 +10,11 @@ Currently, the Arduino sketch that is used to send the accelerometer and gyrosco
 
 
 __Future Updates__ <br>
+I am currently working on a new GUI for the main menu. Whether this will be done inside Processing or using native Java is currently undecided.
+
 At some point, the whole program will be rewritten and released as a contributed library for Processing. One of the main focuses before this happens is updating the code to allow the user to use any form of input (video capture, processing sketch, etc).
+
+Another possibility is a complete port of the program over to native Java. If this were to happen, it would be re-released as a new project, and the current project in Processing will be preserved.
 
 
 __Controls__ <br>
